@@ -4,7 +4,7 @@
 import DateIcon from "../icon/date-icon";
 import AddressIcon from "../icon/address-icon";
 import LogisticsItem from "./logistics-item";
-
+import Image from "next/image";
 function EventLogistics(props) {
   const { date, address, image, imageAlt } = props;
 
@@ -19,13 +19,13 @@ function EventLogistics(props) {
   return (
     <section className="bg-gray-100 p-6 rounded-2xl shadow-md max-w-4xl mx-auto my-6">
       <div className="flex flex-col md:flex-row items-center gap-6">
-        <div className="w-full md:w-1/3">
-          <img
-            src={`/${image}`}
+        <Image src={`/${image}`}
             alt={imageAlt}
             className="w-full h-auto rounded-xl object-cover shadow"
-          />
-        </div>
+            width={160}
+            height={160}
+            />
+        
         <ul className="w-full md:w-2/3 space-y-4">
           <LogisticsItem icon={DateIcon}>
             <time className="text-gray-700 font-medium">{humanReadableDate}</time>

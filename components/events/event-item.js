@@ -1,8 +1,8 @@
-
 import AddressIcon from "../icon/address-icon";
 import ArrowRightIcon from "../icon/arrow-right.icon";
 import DateIcon from "../icon/date-icon";
 import Button from "../ui/button";
+import Image from 'next/image'
 
 function EventItem(props) {
   const { title, image, date, location, id } = props;
@@ -10,27 +10,29 @@ function EventItem(props) {
   const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
     day: 'numeric',
     month: 'long',
-    year: 'numeric'
+    year: 'numeric',
   });
 
-  const formattedAddress = location.replace(',', '\n');
+  // Ensure location is a string before replacing commas
+  const formattedAddress = location && typeof location === 'string' ? location.replace(',', '\n') : 'No address provided';
+
+  // Correct string interpolation using backticks
   const exploreLink = `/events/${id}`;
 
   return (
     <li className="bg-white shadow-md rounded-2xl overflow-hidden flex flex-col md:flex-row gap-4 p-4 transition hover:shadow-lg">
       <div className="md:w-1/3">
-        <img
-          src={'/' + image}
+      <Image src={image} 
           alt={title}
-          className="w-full h-48 object-cover rounded-lg"
-        />
+          className="w-full h-48 object-cover rounded-lg" width={340} height={160}/>
+        
       </div>
       <div className="md:w-2/3 flex flex-col justify-between">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
           <div>
             <DateIcon />
-          <time className="text-gray-600 text-sm block">{humanReadableDate}</time>
+            <time className="text-gray-600 text-sm block">{humanReadableDate}</time>
           </div>
           <address className="whitespace-pre text-gray-500 text-sm not-italic">
             <AddressIcon />
@@ -43,7 +45,7 @@ function EventItem(props) {
             <span>
               <ArrowRightIcon />
             </span>
-            </Button>
+          </Button>
         </div>
       </div>
     </li>
@@ -51,4 +53,3 @@ function EventItem(props) {
 }
 
 export default EventItem;
-
