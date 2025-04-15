@@ -6,7 +6,7 @@ const DUMMY_EVENTS = [
       'Everyone can learn to code! Yes, everyone! In this live event we are going to...',
     location: 'Some Street 25, 12345 San Somewhereo',
     date: '2021-05-12',
-    image: '/images/coding-event.jpg',  // Correct path to public/images folder
+    image: '/images/coding-event.jpg',
     isFeatured: false,
   },
   {
@@ -16,7 +16,7 @@ const DUMMY_EVENTS = [
       'We know networking is not fun if you are an introverted person.',
     location: 'New Wall Street 5, 98765 New York',
     date: '2021-05-30',
-    image: '/images/introvert-event.jpg',  // Correct path to public/images folder
+    image: '/images/introvert-event.jpg',
     isFeatured: true,
   },
   {
@@ -26,10 +26,12 @@ const DUMMY_EVENTS = [
       'You probably don’t need help with networking in general.',
     location: 'My Street 12, 10115 Broke City',
     date: '2022-04-10',
-    image: '/images/extroverts-event.jpg',  // Correct path to public/images folder
+    image: '/images/extroverts-event.jpg',
     isFeatured: true,
   },
 ];
+
+// === Exported functions ===
 
 export function getFeaturedEvents() {
   return DUMMY_EVENTS.filter((event) => event.isFeatured);

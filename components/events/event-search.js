@@ -1,21 +1,24 @@
 import { useRef } from "react";
 import Button from "../ui/button";
 
-function EventSearch(props) {
-   const yearInputRef= useRef();
-   const monthInputRef=useRef();
+function EventSearch({ onSearch }) {
+  const yearInputRef = useRef();
+  const monthInputRef = useRef();
 
-    function submitHandler(event){
-        event.preentDefault();
+  function submitHandler(event) {
+    event.preventDefault();
 
-        const selectedYear = yearInputRef.current.value;
-        const selectedMonth = monthInputRef.current.value;
+    const selectedYear = +yearInputRef.current.value; // Convert to number
+    const selectedMonth = +monthInputRef.current.value - 1; // Convert to number and adjust for 0-based month
 
-        props.onSearch(selectedYear,selectedMonth);
+    onSearch(selectedYear, selectedMonth);
+  }
 
-    }
   return (
-    <form className="bg-white shadow-md rounded-xl p-6 max-w-3xl mx-auto mt-8 space-y-4" onSubmit={submitHandler}>
+    <form
+      className="bg-white shadow-md rounded-xl p-6 max-w-3xl mx-auto mt-8 space-y-4"
+      onSubmit={submitHandler}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Year Selection */}
         <div className="flex flex-col">
@@ -23,7 +26,7 @@ function EventSearch(props) {
             Year
           </label>
           <select
-          ref={yearInputRef}
+            ref={yearInputRef}
             id="year"
             className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
           >
@@ -38,7 +41,7 @@ function EventSearch(props) {
             Month
           </label>
           <select
-          ref={monthInputRef}
+            ref={monthInputRef}
             id="month"
             className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
           >
@@ -60,7 +63,7 @@ function EventSearch(props) {
 
       {/* Submit Button */}
       <div className="text-right">
-        <Button>Find Events</Button>
+        <Button type="submit">Find Events</Button>
       </div>
     </form>
   );
