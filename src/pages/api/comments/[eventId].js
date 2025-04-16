@@ -1,16 +1,29 @@
 import { comment } from "postcss";
 import {MongoClient} from 'mongodb';
+import {connectDatabase,insertDocument,getAllDocuments} from '../../../../helpers/db-util'
+
 
 async function handler(req,res){
     const eventId=req.query.eventId;
 
-    const client = MongoClient.connect('mongodb+srv://greatstack:L9J.V#t6QN!_iTE@cluster0.mwhfzre.mongodb.net/events?retryWrites=true&w=majority&appName=Cluster0');
+    let client;
 
+    
+    try{
+        const client = connectDatabase();
+
+    }catch(error){
+        res.status(500).json({message:'connecting to the database failed!'});
+        return;
+    }
+
+    
     if(req.method==='POST'){
         const {email,name,text}=req.body;
 
         if(!email.includes('@') || name || name.trim()==='' || text.trim()===''){
             res.status(422).json({message:'Invalid Input'});
+            client.close();
             return;
         }
         
@@ -20,25 +33,50 @@ async function handler(req,res){
             name,
             text,
             eventId
+        };
+        let result;
+
+        try{
+            const result = await insertDocument(client,'comment',newComment);
+            newComment._id=result.insertedId;
+        res.status(201).json({message:"Added comment", comment: newComment})
+
+        }catch(error){
+            res.status(500).json({message:'Inserting comment failed'})
+
         }
 
-        const db = client.db();
-        const result=await db.collecton('comments').insertOne(newComment)
-        console.log(result);
+        //const db = client.db();
+        //const result=await db.collecton('comments').insertOne(newComment)
+        //console.log(result);
 
-        newComment.id=result.insertedId;
-        res.status(201).json({message:"Added comment", comment: newComment})
+     
+
+        
 
     }
     if(req.method==='GET'){
-        const dummyList=[
+        try{
+            const documents = await getAllDocuments(client,'comments',{_id:-1})
+            res.status(200).json({comment:documents});
+
+        }catch(error){
+            res.status(500).json({message:'Getting comment failed.'})
+           
+        }
+
+       
+              
+
+       /* const dummyList=[
             {id:'c1',name:'Max', text:"A first comment"},
             {id:'c2',name:'Manuel',  text:"A second comment"}
         ]
+            */
 
     }
-    res.status(200).json({comment:dummyList});
+  
 
 }
-client.close();
+
 export default handler;

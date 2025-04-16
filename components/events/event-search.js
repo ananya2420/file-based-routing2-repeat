@@ -1,17 +1,20 @@
 import { useRef } from "react";
 import Button from "../ui/button";
+import { useRouter } from "next/router";
 
 function EventSearch({ onSearch }) {
   const yearInputRef = useRef();
   const monthInputRef = useRef();
+  const router = useRouter();
 
   function submitHandler(event) {
     event.preventDefault();
 
     const selectedYear = +yearInputRef.current.value; // Convert to number
-    const selectedMonth = +monthInputRef.current.value - 1; // Convert to number and adjust for 0-based month
+    const selectedMonth = +monthInputRef.current.value; // Adjust for 1-based month
 
-    onSearch(selectedYear, selectedMonth);
+    // Redirect to the filtered events page with the selected filters
+    router.push(`/events/${selectedYear}/${selectedMonth}`);
   }
 
   return (
